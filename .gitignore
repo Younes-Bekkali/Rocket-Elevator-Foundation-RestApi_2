@@ -1,0 +1,20 @@
+# ignore appsettings configuration files
+/appsettings.development.json
+/appsettings.staging.json
+/appsettings.production.json
+
+
+# Created by https://www.gitignore.io/api/dotnetcore
+# Edit at https://www.gitignore.io/?templates=dotnetcore
+
+### DotnetCore ###
+# .NET Core build folders
+/bin
+/obj
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
+
+# End of https://www.gitignore.io/api/dotnetcore
