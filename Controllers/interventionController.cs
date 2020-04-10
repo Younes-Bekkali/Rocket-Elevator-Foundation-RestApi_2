@@ -22,7 +22,7 @@ namespace RocketElevatorApi.Controllers
 
         
 
-        // Retriving the full interventions list                            https://localhost:5001/api/elevator/all
+        // Retriving the full interventions list                            https://localhost:5001/api/intervention/all
         // GET api/intervention/all :       
         [HttpGet ("all")]
         public ActionResult<List<Intervention>> GetAll() 
@@ -32,19 +32,18 @@ namespace RocketElevatorApi.Controllers
 
         //GET: Returns all fields of all Service 
         //Request records that do not have a start date and are in "Pending" status.
-        //https://localhost:5001/api/intervention/notStartIntervention
-         [HttpGet("notStartIntervention")]
+        //https://localhost:5001/api/intervention/PendingList
+         [HttpGet("PendingList")]
         public IEnumerable<Intervention> GetInterventions() {
             IQueryable<Intervention> Interventions =
             from le in _context.Interventions
-            where le.start_intervention == null && le.status == "pending"
+            where le.start_intervention == null && le.status == "Pending"
             select le;
 
             return Interventions.ToList();
         }
 
-        //PUT: Change the status of the intervention request 
-        //to "InProgress" and add a start date and time (Timestamp).
+        
 
         // Retriving Status of a specific Intervention                      https://localhost:5001/api/intervention/1
         // GET: api/intervention/1          
@@ -61,59 +60,87 @@ namespace RocketElevatorApi.Controllers
             return todoItemElev;
         }
 
-        
-         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, Intervention item) {
+
+
+        //PUT: Change the status of the intervention request to "InProgress" 
+        //and add a start date and time (Timestamp).
+        // https://localhost:5001/api/intervention/InProgress
+         [HttpPut("InProgress/{id}")]
+        public async Task<IActionResult> PutInProgress(long id, Intervention item) {
             _context.Entry(item).State = EntityState.Modified;
 
             if (id != item.id) {
                 return BadRequest();
             }
-            if (item.status == "InProgress"){
+            if (item.status != "InProgress"){
             item.start_intervention = System.DateTime.Now;
+            item.status = "InProgress";
             item.end_intervention = null;
             await _context.SaveChangesAsync();
             return NoContent();
+            } else {
+            return BadRequest();
             }
-            if (item.status == "Completed"){
-            item.end_intervention = System.DateTime.Now;
-
-            await _context.SaveChangesAsync();
-            return NoContent();
-            }
-            if (item.status == "Pending"){
-            item.start_intervention = null;
-            item.end_intervention = null;
-
-            await _context.SaveChangesAsync();
-            return NoContent();
-            }
-            else
-                {
-                return BadRequest();
-                }
 
         }
+
+
+        // PUT: Change the status of the request for action to "Completed"
+        // and add an end date and time (Timestamp).
+        //https://localhost:5001/api/intervention/Completed
+        [HttpPut("Completed/{id}")]
+        public async Task<IActionResult> PutCompleted(long id, Intervention item) {
+            _context.Entry(item).State = EntityState.Modified;
+
+            if (id != item.id) {
+                return BadRequest();
+            }
+            if (item.status != "Completed"){
+                item.end_intervention = System.DateTime.Now;
+                item.status = "Completed";
+                await _context.SaveChangesAsync();
+                return NoContent();
+            
+            } else {
+                 return BadRequest();
+            }
+
+        }
+
+        
+        // Bonus: Helpful sometimes
+        // PUT: Change the status of the request for action to "Pending"
+        // and set the start and  end date to null (Timestamp).
+        //https://localhost:5001/api/intervention/Pending
+        [HttpPut("Pending/{id}")]
+        public async Task<IActionResult> PutPending(long id, Intervention item) {
+            _context.Entry(item).State = EntityState.Modified;
+
+            if (id != item.id) {
+                return BadRequest();
+            }
+            if (item.status != "Pending"){
+                item.start_intervention = null;
+                item.end_intervention = null;
+                item.status = "Pending";
+                await _context.SaveChangesAsync();
+                return NoContent();
+            
+            } else {
+                 return BadRequest();
+            }
+
+        }
+
+        
         
 
-        // Changing Status of a specific Elevator                       https://localhost:5001/api/elevator/4   
-        // PUT: api/elevator/4             
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> PutTodoItem(long id, Intervention article)
-        // {
-        //     if (id != article.id)
-        //     {
-        //         return BadRequest();
-        //     }
-        //     else if (article.status == "active" || article.status == "inactive" || article.status == "intervention" )
-        //     {
-        //         _context.Entry(article).State = EntityState.Modified;
-        //         await _context.SaveChangesAsync();
-        //         return Content("The status of the Elevator Id: " + article.id + " as been changed satisfactorily to: " + article.status);
-        //     }
 
-        //     return Content("Invalid value entered. The valid status are: active, inactive, intervention!");
-        // }
+        
+
+
+        
+        
 
 
     }

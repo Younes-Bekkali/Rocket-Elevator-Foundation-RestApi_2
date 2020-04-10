@@ -22,8 +22,8 @@ namespace RocketElevatorApi.Models
         public long employee_id { get; set; }
         public DateTime? start_intervention { get; set; }
         public DateTime? end_intervention { get; set; }
-        public String resultat { get; set; } 
-        public String rapport { get; set; } 
+        public String result { get; set; } 
+        public String report { get; set; } 
 
     }
 }   
