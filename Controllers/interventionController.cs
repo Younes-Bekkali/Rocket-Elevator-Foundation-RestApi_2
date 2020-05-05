@@ -72,7 +72,7 @@ namespace RocketElevatorApi.Controllers
             if (id != item.id) {
                 return BadRequest();
             }
-            if (item.status != "InProgress"){
+            if (item.status != "InProgress" ){
             item.start_intervention = System.DateTime.Now;
             item.status = "InProgress";
             item.end_intervention = null;
@@ -95,8 +95,9 @@ namespace RocketElevatorApi.Controllers
             if (id != item.id) {
                 return BadRequest();
             }
-            if (item.status != "Completed"){
+            if (item.status != "Completed" ){
                 item.end_intervention = System.DateTime.Now;
+                item.start_intervention = System.DateTime.Now;
                 item.status = "Completed";
                 await _context.SaveChangesAsync();
                 return NoContent();
@@ -119,7 +120,7 @@ namespace RocketElevatorApi.Controllers
             if (id != item.id) {
                 return BadRequest();
             }
-            if (item.status != "Pending"){
+            if (item.status == "pending" || item.status == "inprogress" || item.status == "completed"){
                 item.start_intervention = null;
                 item.end_intervention = null;
                 item.status = "Pending";
