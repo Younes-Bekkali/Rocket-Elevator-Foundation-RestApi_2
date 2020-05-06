@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using RocketElevatorApi.Models;
 using System;
-
+using Newtonsoft.Json.Linq;
 
 namespace RocketElevatorApi.Controllers
 {
@@ -42,6 +42,29 @@ namespace RocketElevatorApi.Controllers
 
              return Ok();
          }
+           [HttpPost]
+      public ActionResult<Employee> PostEmployee([FromBody]JObject email)
+      {
 
+          //get the value associate with the key of my Json object email
+          var queryValidEmail = email.GetValue("email");
+
+          var validEmail = queryValidEmail.ToString();
+
+          //compare
+          var administratorEmail = _context.Employees.Where(e => e.email == validEmail);
+
+          if (administratorEmail.Count() == 0)
+          {
+              return StatusCode(404);
+          }
+          else
+          {
+              return StatusCode(200);
+              
+          }
+
+
+      }
     }
 }
