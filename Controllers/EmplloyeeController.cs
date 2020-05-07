@@ -22,22 +22,22 @@ namespace RocketElevatorApi.Controllers
 
         // // To see all the employees                            https://localhost:5001/api/employee/all
         // // GET: api/employee/all
-        // [HttpGet("all")]
-        // public IEnumerable<Employee> GetEmployee()
-        // {
-        //     return _context.Employees;
-        // }
-
-
-         [HttpGet]
-        public IEnumerable<Employee> GetEmployees() {
-            IQueryable<Employee> Employees =
-            from le in _context.Employees
-            where le.email != null
-            select le;
-
-            return Employees.ToList();
+        [HttpGet("all")]
+        public IEnumerable<Employee> GetEmployee()
+        {
+            return _context.Employees;
         }
+
+
+        //  [HttpGet]
+        // public IEnumerable<Employee> GetEmployees() {
+        //     IQueryable<Employee> Employees =
+        //     from le in _context.Employees
+        //     where le.email != null
+        //     select le;
+
+        //     return Employees.ToList();
+        // }
 
         // To get an intervention by email                               https://localhost:5001/api/employee/{email}
          // GET: api/employee/{email}  
