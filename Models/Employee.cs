@@ -16,5 +16,7 @@ namespace RocketElevatorApi.Models
         public string first_name { get; set; }
         public string title { get; set; }
         public string email { get; set; }
+
+        public string encrypted_password {get; set;}
     }
 }
