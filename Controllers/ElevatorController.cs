@@ -41,6 +41,22 @@ namespace RocketElevatorApi.Controllers
             return Elevators.ToList();
         }
 
+
+        // Retriving Status of All the Elevators active             https://localhost:5001/api/elevator/active
+        // GET: api/elevator/notinoperation            
+
+        [HttpGet("active")]
+        public IEnumerable<Elevator> GetActiveElevators()
+        {
+            IQueryable<Elevator> Elevators = from list_elev in _context.Elevators
+                                             where list_elev.status == "active"
+                                             select list_elev;
+
+            return Elevators.ToList();
+        }
+
+
+
         // Retriving Status of a specific Elevator                      https://localhost:5001/api/elevator/4
         // GET: api/elevator/4            
         [HttpGet("{id}")]
@@ -94,7 +110,7 @@ namespace RocketElevatorApi.Controllers
             this._context.Elevators.Update(myElevator);
             await this._context.SaveChangesAsync();
 
-            return Content("The status of the intenvention ID: " + myElevator.id +
+            return Content("The status of the elevator ID: " + myElevator.id +
             " has been changed to: " + myElevator.status);
         }
 
@@ -116,7 +132,7 @@ namespace RocketElevatorApi.Controllers
             this._context.Elevators.Update(myElevator);
             await this._context.SaveChangesAsync();
 
-            return Content("The status of the intenvention ID: " + myElevator.id +
+            return Content("The status of the elevator ID: " + myElevator.id +
             " has been changed to: " + myElevator.status);
         }
 
